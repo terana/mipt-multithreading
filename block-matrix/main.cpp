@@ -8,10 +8,10 @@
 using namespace std;
 
 int main(int argc, char **argv) {
-    const int ay = argc > 1 ? std::stoi(argv[1]) : 1008,
+    const int ay = argc > 1 ? std::stoi(argv[1]) : 1000,
             ax = argc > 2 ? std::stoi(argv[2]) : 900,
             by = ax,
-            bx = argc > 3 ? std::stoi(argv[3]) : 1224,
+            bx = argc > 3 ? std::stoi(argv[3]) : 1200,
             cy = ay, cx = bx;
 
     blockmatrix<double> a(ay, ax), b(by, bx), c(cy, cx);
@@ -54,6 +54,6 @@ int main(int argc, char **argv) {
                 sum += *f(i, j);
             }
         }
-        printf("matrix: sum=%.0lf time=%.6f\n", sum, (end - start) / 1000000000.);
+        printf("matrix:      sum=%.0lf time=%.6f\n", sum, (end - start) / 1000000000.);
     }
 }

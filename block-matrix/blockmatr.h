@@ -6,8 +6,8 @@ class blockmatrix {
 
 public:
     blockmatrix(size_t lines, size_t columns) : lines(lines), columns(columns) {
-        block_lines = lines / blocksize;
-        block_columns = columns / blocksize;
+        block_lines = lines / blocksize + (lines % blocksize ? 1 : 0);
+        block_columns = columns / blocksize + (columns % blocksize ? 1 : 0);
 
         bigbody = new block_t[block_lines * block_columns];
         body = new block_t *[block_lines];
