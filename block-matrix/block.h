@@ -45,14 +45,19 @@ public:
         if (lines != left.lines) return false;
         if (columns != right.columns) return false;
 
-        block right_tr;
-        right_tr.transpose(right);
+        /* Uncomment this and the line below,
+         * if you want to transpose the block before multiplying. */
+        // block right_tr;
+        // right_tr.transpose(right);
+
+
 
         for (size_t i = 0; i < lines; i++) {
             for (size_t j = 0; j < columns; j++) {
                 T acc = (T) 0;
                 for (size_t k = 0; k < left.columns; k++) {
-                    acc += *left(i, k) * *right_tr(j, k);
+                    // acc += *left(i, k) * *right_tr(j, k);
+                    acc += *left(i, k) * *right(k, j);
                 }
                 *(*this)(i, j) = acc;
             }
