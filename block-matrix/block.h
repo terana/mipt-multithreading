@@ -45,11 +45,14 @@ public:
         if (lines != left.lines) return false;
         if (columns != right.columns) return false;
 
+        block right_tr;
+        right_tr.transpose(right);
+
         for (size_t i = 0; i < lines; i++) {
             for (size_t j = 0; j < columns; j++) {
                 T acc = (T) 0;
                 for (size_t k = 0; k < left.columns; k++) {
-                    acc += *left(i, k) * *right(k, j);
+                    acc += *left(i, k) * *right_tr(j, k);
                 }
                 *(*this)(i, j) = acc;
             }
@@ -66,6 +69,18 @@ public:
         for (size_t i = 0; i < lines; i++) {
             for (size_t j = 0; j < columns; j++) {
                 *(*this)(i, j) = *left(i, j) + *right(i, j);
+            }
+        }
+        return true;
+    }
+
+    bool transpose(block const &b) {
+        if (b.columns != columns) return false;
+        if (b.lines != lines) return false;
+
+        for (size_t i = 0; i < lines; i++) {
+            for (size_t j = 0; j < columns; j++) {
+                *(*this)(i, j) = *b(j, i);
             }
         }
         return true;
