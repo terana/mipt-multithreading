@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
 
     const int max_array_size = 1 << 20;
     std::cout << "n_threads\tarray_size\ttime\n";
-    for (int size = 8; size < max_array_size; size = size << 1) {
+    for (int size = 8; size <= max_array_size; size = size << 1) {
         std::vector<int> a(size);
         std::generate(a.begin(), a.end(), [] { return std::rand(); });
 
@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
         sort(a, true, pool);
         long long end = __rdtsc();
 
-        std::cout << n_threads << '\t' << size << '\t' << end - start << '\n';
+        std::cout << n_threads << '\t' << size << '\t' << (end - start) / 1000000. << '\n';
     }
 
     return 0;

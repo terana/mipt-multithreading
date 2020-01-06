@@ -2,3 +2,9 @@
 sort
 *.o
 a.out
+
+# Python stuff.
+.ipynb_checkpoints/
+
+# Project-related
+sort_time_dependency
