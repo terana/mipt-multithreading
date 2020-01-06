@@ -2,16 +2,17 @@
 // Created by Anastasiia on 06.01.2020.
 //
 
-#ifndef SORT_POOL_BITONIC_SORT_H
-#define SORT_POOL_BITONIC_SORT_H
+#ifndef SORT_POOL_BITONIC_SORT_H_
+#define SORT_POOL_BITONIC_SORT_H_
 
 #include <vector>
 #include <algorithm>
 
-#include "thread_pool.h"
+#include "./thread_pool.h"
 
 template<class T>
-void bitonicMerge(std::vector <T> &a, typename std::vector<T>::iterator start, int count, bool ascending) {
+void bitonicMerge(std::vector <T> &a, typename std::vector<T>::iterator start,
+                  int count, bool ascending) {
     if (count < 2) {
         return;
     }
@@ -28,16 +29,25 @@ void bitonicMerge(std::vector <T> &a, typename std::vector<T>::iterator start, i
 }
 
 template<class T>
-void bitonicSort(std::vector <T> &a, typename std::vector<T>::iterator start, int count, bool ascending) {
+void bitonicSort(std::vector <T> &a, typename std::vector<T>::iterator start,
+                 int count, bool ascending, ThreadPool &pool) {
     if (count < 2) {
         return;
     }
 
     int k = count / 2;
-    bitonicSort(a, start, k, true);
-    bitonicSort(a, start + k, k, false);
+    bitonicSort(a, start, k, true, pool);
+    bitonicSort(a, start + k, k, false, pool);
 
-    bitonicMerge(a, start, count, ascending);
+    std::future<void> res = pool.enqueue([&] {
+        bitonicMerge(a, start, count, ascending);
+    });
+    res.wait();
 }
 
-#endif //SORT_POOL_BITONIC_SORT_H
+template<class T>
+void sort(std::vector <T> &array, bool ascending, ThreadPool &pool) {
+    bitonicSort(array, array.begin(), array.size(), ascending, pool);
+}
+
+#endif  // SORT_POOL_BITONIC_SORT_H_
